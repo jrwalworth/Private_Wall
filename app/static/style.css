@@ -4,7 +4,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-
 .a-form {
     display: flex;
     justify-content: center;
@@ -13,16 +12,15 @@
 
 a {
     text-decoration: none;
+    color: white;
     
 }
-
 
 .messages {
     text-align: center;
     border-radius: 5px;
     padding: 10px;
 }
-
 
 .myForm {
     padding: 25px;
@@ -46,6 +44,21 @@ a {
 
 .both-forms {
     display:flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items:flex-start;
+
+}
+
+.wall-header {
+    margin-top: 25px;
+}
+
+.wall-h1 {
+    text-align: center;
+}
+@media only screen and (max-width: 800px){
+    .md-1 {
+        display: block;
+    }
+
 }
