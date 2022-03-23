@@ -1,4 +1,5 @@
 from app.controllers import users
+from app.controllers import messages
 from app import app
 
 

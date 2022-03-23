@@ -19,7 +19,7 @@ a {
 .messages {
     text-align: center;
     border-radius: 5px;
-    padding: 10px;
+    padding-top: 10px;
 }
 
 .myForm {

@@ -29,48 +29,28 @@
         <div class="row">
             <div class="col col-6">
                 <div class="container px-4 py-5" id="custom-cards">
-                    <h2 class="pb-2 border-bottom">You have {{user.messages}} Messages</h2>
+                    <h2 class="pb-2 border-bottom">You have {{messages|length}} Messages</h2>
                     <div class="row row-cols-1 d-block align-items-stretch g-4 py-5">
-                        <div class="col">
-                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                                <div class="d-flex flex-column h-100 p-4 pb-3 text-white text-shadow-1">
-                                    <h2 class="pt-2 mt-2 mb-4 display-6 lh-2 fw-bold">Short title, long jacket...</h2>
-                                    <ul class="d-flex list-unstyled mt-auto">
-                                        <li class="me-auto">
-                                            <button class="btn btn-sm btn-danger"><a href="/delete">Delete</a></button>
-                                        </li>
-                                        <li class="d-flex align-items-center me-3">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
-                                            <small>UserName</small>
-                                        </li>
-                                        <li class="d-flex align-items-center">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
-                                            <small>Timestamp</small>
-                                        </li>
-                                    </ul>
+                        {% for m in messages %}
+                            <div class="col">
+                                <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
+                                    <div class="d-flex flex-column h-100 p-4 pb-3 text-white text-shadow-1">
+                                        <h2 class="pt-2 mt-2 mb-4 display-6 lh-2 fw-bold">{{m.text}}</h2>
+                                        <ul class="d-flex list-unstyled mt-auto">
+                                            <li class="me-auto">
+                                                <button class="btn btn-sm btn-danger"><a href="/delete/message/{{user.id}}">Delete</a></button>
+                                            </li>
+                                            <li class="d-flex align-items-center me-3">
+                                                <small>Sent from: {{m.sender}}</small>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <small>{{m.timeDiff()}}</small>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                                <div class="d-flex flex-column h-100 p-4 pb-3 text-white text-shadow-1">
-                                    <h2 class="pt-2 mt-2 mb-4 display-6 lh-2 fw-bold">Short title, long jacket...</h2>
-                                    <ul class="d-flex list-unstyled mt-auto">
-                                        <li class="me-auto">
-                                            <button class="btn btn-sm btn-danger"><a href="/delete">Delete</a></button>
-                                        </li>
-                                        <li class="d-flex align-items-center me-3">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
-                                            <small>UserName</small>
-                                        </li>
-                                        <li class="d-flex align-items-center">
-                                            <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
-                                            <small>Timestamp</small>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -78,9 +58,10 @@
                 <div class="container px-4 py-5" id="send_a_message">
                     <h2 class="pb-2 border-bottom">Send a Message</h2>
                     <div class="row row-cols-1 d-block align-items-stretch g-4 py-5">
-                        <form action="/new_message" method="post" class="mt-4 p-4 bg-dark card rounded-5 shadow-lg">
-                            <label for="select_user" class="text-light mb-2">Select User:</label>
-                            <select name="fsend_to" class="d-block mb-3 form-select">
+                        <!-- SEND MESSAGE TO USER FORM -->
+                        <form action="/message/new" method="post" class="mt-4 p-4 bg-dark card rounded-5 shadow-lg">
+                            <label for="recipient" class="text-light mb-2">User:</label>
+                            <select name="recipient_id" class="d-block mb-3 form-select">
                                 <!--don't send yourself a message, only list other users-->
                                 <option selected>Select a User</option>
                                 {% for user in userList %}
@@ -90,16 +71,14 @@
                                 {% endfor %}
                             </select>
                             <label for="messageText" class="text-light mb-2">Message:</label>
-                            <textarea name="messageText" id="messageText" cols="30" rows="10" class="form-control"></textarea>
+                            <textarea name="text" id="messageText" cols="30" rows="5" class="form-control"></textarea>
                             <input type="submit" value="Send Message" class="btn btn-primary m-3">
+                            <input type="hidden" name="sender_id" value="{{session.user_id}}">
                         </form>
                     </div>
-                    
-                </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

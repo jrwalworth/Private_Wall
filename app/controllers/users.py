@@ -1,5 +1,6 @@
 from flask import render_template, redirect, request, session, flash
 from app.models.user import User
+from app.models.message import Message
 from app import app
 from flask_bcrypt import Bcrypt
 
@@ -30,7 +31,7 @@ def register():
         return redirect('/')
     session['user_id'] = id
     flash('You are logged in.')
-    return redirect('/success/')
+    return redirect('/dashboard/')
 
 
 #hidden route from login form
@@ -48,11 +49,11 @@ def login():
         return redirect('/')
     session['user_id'] = user.id
     flash('You are logged in.')
-    return redirect('/success/')
+    return redirect('/dashboard/')
 
 #view page after login successfully
-@app.route('/success/')
-def welcome_page():
+@app.route('/dashboard/')
+def wall():
     if 'user_id' not in session:
         flash('You must be logged in to view this page.')
         return redirect('/')
@@ -60,11 +61,12 @@ def welcome_page():
         'id' : session['user_id']
     }
     results = User.get_all()
-    return render_template('wall.html', userList = results, user=User.get_one(data))
+    messages = Message.get_user_messages(data)
+    return render_template('wall.html', userList = results, user=User.get_one(data), messages = messages)
 
 #logout hidden method, redirect back to index login page.
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You are now logged out.')
+    # flash('You are now logged out.')
     return redirect('/')
