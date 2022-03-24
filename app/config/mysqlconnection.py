@@ -1,11 +1,12 @@
 import pymysql.cursors
+from env import db_pw
 
 class MySQLConnection:
     def __init__(self, db):
         connection = pymysql.connect(host = 'localhost',
                 #this is the only section we'll have to edit User/password
                 user = 'root',
-                password = 'root',
+                password = db_pw,
                 db = db,
                 charset = 'utf8mb4',
                 cursorclass = pymysql.cursors.DictCursor,
